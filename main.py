@@ -1,11 +1,10 @@
 import itertools
 import random
 import pandas as pd
+import math
 
 
 # Les fonctions 
-
-
 
 # Fonction qui calcule un voisin du clavier donner 
 def voisin(clavier):
@@ -33,13 +32,33 @@ def frequence(lettreL,lettreC):
     data =pd.read_table('freqBigrammes.txt')
     return data[lettreL][lettreInt]
 
+
 # Fonction qui calcule la distance entre 2 lettre
-def dist(lettreL, lettreC):
-    return 0
+def dist(lettreL, lettreC, clavier):
+    # Récupération des indices des touches correspondantes
+    iL, jL = position(clavier, lettreL)
+    iC, jC = position(clavier, lettreC)
+    
+    # Calcul de la distance euclidienne entre les touches
+    dist = math.sqrt((iL - iC) ** 2 + (jL - jC) ** 2)
+    
+    return dist
+
+
+# Fonction qui permet de recuperer la position d'une lettre
+def position(clavier, lettre):
+    for i in range(len(clavier)):
+        for j in range(len(clavier[0])):
+            if clavier[i][j] == lettre:
+                return i, j
+    return None
+
 
 # Fonction qui calcule l'energie du clavier
 def energie(clavier):
+    
     return 0
+
 
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
@@ -48,6 +67,7 @@ clavier = [['_' for j in range(10)] for i in range(4)]
 lettres = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 print(frequence('B','C'))
+
 
 # Clavier de départ 
 # Placement aléatoire des lettres sur le clavier
@@ -59,7 +79,8 @@ for lettre in lettres:
         j = random.randint(0, 9)
     clavier[i][j] = lettre
 
-
+# Test de la distance
+print(dist('B','C',clavier))
 
 # Affichage du clavier, une casse vide du tableau est défini par _
 for i in range(4):
