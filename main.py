@@ -4,7 +4,7 @@ import pandas as pd
 import math
 
 
-# Les fonctions 
+# LES FONCTIONS 
 
 # Fonction qui calcule un voisin du clavier donner 
 def voisin(clavier):
@@ -56,9 +56,24 @@ def position(clavier, lettre):
 
 # Fonction qui calcule l'energie du clavier
 def energie(clavier):
-    
-    return 0
+    somme = 0
+    # On parcours le clavier 
+    for i in range(4):
+        for j in range(10):
 
+            # Si c'est une lettre 
+            if(clavier[i][j] != '_'):
+               # On parcour les lettre de l'aphaB
+               for lettre in lettres:
+                    
+                    # Formule de l'energie 
+                    somme = somme + dist(lettre, clavier[i][j],clavier) * frequence(lettre, clavier[i][j])
+    
+
+    return somme
+
+
+# LE MAIN
 
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
@@ -89,7 +104,7 @@ for i in range(4):
     print()
 
 
-print()
+print(energie(clavier))
 
 # Affichage du  nvx clavier, une casse vide du tableau est défini par _
 clavier = voisin(clavier)
@@ -97,4 +112,6 @@ for i in range(4):
     for j in range(10):
         print(clavier[i][j], end=' ')
     print()
+
+
 
