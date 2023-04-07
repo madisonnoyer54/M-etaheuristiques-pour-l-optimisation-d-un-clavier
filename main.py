@@ -90,28 +90,45 @@ for lettre in lettres:
     clavier[i][j] = lettre
 
 
+for i in range(0,10) : 
+    clavierVoisin = voisin(clavier)
+    if(energie(clavierVoisin) > energie(clavier)):
+        clavier = clavierVoisin
 
-# LES TESTS 
-# Test de la frequence 
-print(frequence('B','C'))
-# Test de la distance
-print(dist('B','C',clavier))
-
-# Affichage du clavier
+print( "Resultat obtenue avec 10 iteration")
+print( "L'énergie trouver:", energie(clavier))
+print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
 for i in range(4):
     for j in range(10):
         print(clavier[i][j], end=' ')
     print()
 
+
+
+# LES TESTS 
+# Test de la frequence 
+#print(frequence('B','C'))
+# Test de la distance
+#print(dist('B','C',clavier))
+
+# Affichage du clavier
+
+"""
+for i in range(4):
+    for j in range(10):
+        print(clavier[i][j], end=' ')
+    print()
+"""
 # Test de la fonction energie 
-print(energie(clavier))
+#print(energie(clavier))
 
 # Affichage du  nvx clavier
+"""
 clavier = voisin(clavier)
 for i in range(4):
     for j in range(10):
         print(clavier[i][j], end=' ')
     print()
-
+"""
 
 
