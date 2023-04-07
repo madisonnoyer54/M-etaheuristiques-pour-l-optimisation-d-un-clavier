@@ -1,9 +1,7 @@
 import random
 import pandas as pd
 import math
-
-# Binome SUEL Benjamin, NOYER Madison 
-# La méthode utiliser est le recuit simulé.
+#import matplotlib.pyplot as plt
 
 # LES FONCTIONS 
 
