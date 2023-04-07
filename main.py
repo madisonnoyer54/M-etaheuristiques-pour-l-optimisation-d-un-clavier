@@ -1,8 +1,9 @@
-import itertools
 import random
 import pandas as pd
 import math
 
+# Binome SUEL Benjamin, NOYER Madison 
+# La méthode utiliser est le recuit simulé.
 
 # LES FONCTIONS 
 
@@ -74,15 +75,9 @@ def energie(clavier):
 
 
 # LE MAIN
-
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
-
-
 lettres = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-
-print(frequence('B','C'))
-
 
 # Clavier de départ 
 # Placement aléatoire des lettres sur le clavier
@@ -94,19 +89,24 @@ for lettre in lettres:
         j = random.randint(0, 9)
     clavier[i][j] = lettre
 
+
+
+# LES TESTS 
+# Test de la frequence 
+print(frequence('B','C'))
 # Test de la distance
 print(dist('B','C',clavier))
 
-# Affichage du clavier, une casse vide du tableau est défini par _
+# Affichage du clavier
 for i in range(4):
     for j in range(10):
         print(clavier[i][j], end=' ')
     print()
 
-
+# Test de la fonction energie 
 print(energie(clavier))
 
-# Affichage du  nvx clavier, une casse vide du tableau est défini par _
+# Affichage du  nvx clavier
 clavier = voisin(clavier)
 for i in range(4):
     for j in range(10):
