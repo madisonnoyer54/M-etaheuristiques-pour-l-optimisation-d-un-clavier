@@ -5,10 +5,6 @@ import pandas as pd
 
 # Les fonctions 
 
-# Fonction qui calcule l'energie du clavier
-def energie():
-    
-    return 0
 
 
 # Fonction qui calcule un voisin du clavier donner 
@@ -26,72 +22,24 @@ def voisin(clavier):
     return nouveau_clavier
 
 
-def frequence(lettre1,lettre2):
-    lettre1 = '_'+lettre1
+# Fonction qui lit la frenquence de 2 lettre
+# lettreL = _B / lettreC = C_
+def frequence(lettreL,lettreC):
+    lettreL = '_'+lettreL
 
-    # On numerote les lettres 
-    if(lettre2 == 'A'):
-        lettre2 = 0
-    if(lettre2 == 'B'):
-        lettre2 = 1
-    if(lettre2 == 'C'):
-        lettre2 = 2
-    if(lettre2 == 'D'):
-        lettre2 = 3
-    if(lettre2 == 'E'):
-        lettre2 = 4
-    if(lettre2 == 'F'):
-        lettre2 = 5
-    if(lettre2 == 'G'):
-        lettre2 = 6
-    if(lettre2 == 'H'):
-        lettre2 = 7
-    if(lettre2 == 'I'):
-        lettre2 = 8
-    if(lettre2 == 'J'):
-        lettre2 = 9
-    if(lettre2 == 'K'):
-        lettre2 = 10
-    if(lettre2 == 'L'):
-        lettre2 = 11
-    if(lettre2 == 'M'):
-        lettre2 = 12
-    if(lettre2 == 'N'):
-        lettre2 = 13
-    if(lettre2 == 'O'):
-        lettre2 = 14
-    if(lettre2 == 'P'):
-        lettre2 = 15
-    if(lettre2 == 'Q'):
-        lettre2 = 16
-    if(lettre2 == 'R'):
-        lettre2 = 17
-    if(lettre2 == 'S'):
-        lettre2 = 18
-    if(lettre2 == 'T'):
-        lettre2 = 19
-    if(lettre2 == 'U'):
-        lettre2 = 20
-    if(lettre2 == 'V'):
-        lettre2 = 21
-    if(lettre2 == 'W'):
-        lettre2 = 22
-    if(lettre2 == 'X'):
-        lettre2 = 23
-    if(lettre2 == 'Y'):
-        lettre2 = 24
-    if(lettre2 == 'Z'):
-        lettre2 = 25
-               
+    # On convertie en num pour les colonnes
+    lettreInt = ord(lettreC) - ord('A')
 
     data =pd.read_table('freqBigrammes.txt')
-    #print(data['_A']['A_'])
-    #df = pd.DataFrame(data)
-    #print(df)
-    print(data[lettre1][lettre2])
+    return data[lettreL][lettreInt]
+
+# Fonction qui calcule la distance entre 2 lettre
+def dist(lettreL, lettreC):
     return 0
 
-
+# Fonction qui calcule l'energie du clavier
+def energie(clavier):
+    return 0
 
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
@@ -99,7 +47,7 @@ clavier = [['_' for j in range(10)] for i in range(4)]
 
 lettres = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-frequence('B','B')
+print(frequence('B','C'))
 
 # Clavier de départ 
 # Placement aléatoire des lettres sur le clavier
