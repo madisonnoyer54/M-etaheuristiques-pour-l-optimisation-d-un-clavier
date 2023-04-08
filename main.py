@@ -76,21 +76,12 @@ def energie(clavier):
 
 # Fonction à appeler lors de la fermeture de la fenêtre du graphe 
 def on_close(event):
-    plt.close()
-    print( "Resultat obtenue avec", somme, "iterations")
-    print( "L'énergie trouver:", energie(clavier))
-    print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
-    for i in range(4):
-        for j in range(10):
-            print(clavier[i][j], end=' ')
-        print()
-    raise SystemExit
+    stop()
 
 # Fonction fermeture 
 def handle_signal(signal, frame):
-    plt.close()
-    raise SystemExit
-    sys.exit(0)
+   stop()
+
 
 
 # Calcule de T0 
@@ -101,6 +92,20 @@ def T0():
         clavierTest = voisin(clavierTest)
        
     return (energie(clavierTest) + energie(clavier)) /2
+
+
+# Ferme 
+def stop():
+    plt.close()
+    print( "Resultat obtenue avec", somme, "iterations")
+    print( "L'énergie trouver:", energie(clavier))
+    print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
+    for i in range(4):
+        for j in range(10):
+            print(clavier[i][j], end=' ')
+        print()
+    raise SystemExit
+
 # LE MAIN
 #Crée le graphe
 x = []
@@ -137,35 +142,36 @@ for lettre in lettres:
     clavier[i][j] = lettre
 
 
-temps = 0
+
 somme =0
 palier1=0
-nbPalier =0
+palier2 =0
+temp = T0()
 # Condition de continuiter de l'algo
-while(temps < 3) : 
-    temp = T0()
+while(True) : 
     somme = somme +1
     clavierVoisin = voisin(clavier)
 
-    if(energie(clavier) == energie(clavierVoisin)):
-        temps = temps +1
-    else: 
-        temps = 0
-    
-
     # Plus l'energie est petite mieux c'est 
+
     if(energie(clavierVoisin) < temp):
+       # print("passse")
         clavier = clavierVoisin 
         palier1 = palier1 +1
+        temp = energie(clavier)
     
-    # Calcule du palier
-    if(palier1 == 12 | palier1 ==100):
-        nbPalier = nbPalier +1
-        palier1 =0
-        plt.text(somme,energie(clavierVoisin),"Palier", fontsize=8) 
-        plt.axvline(x=somme, color='red')
+    palier2 =palier2 +1
 
-  
+    # Calcule du palier
+    if(palier1 == 12 or palier2 == 100):
+        palier1 =0
+        plt.axvline(x=somme, color='red')
+        palier2 =0
+    
+    # Si 100 iterarations se passe sens changement, alors on considaire qu'on stagne  
+    if(palier2 == 100 and palier1 == 0):
+        stop()
+
     # Pour le graphe
     x.append(somme)
     y.append(energie(clavierVoisin))
@@ -174,21 +180,7 @@ while(temps < 3) :
     ax.autoscale_view()
     plt.draw()
     plt.pause(0.1)
-    temp = energie(clavier)
 
-        
-   
 
-  
-    
 
-plt.close()
-
-print( "Resultat obtenue avec ",somme, " iterations")
-print( "L'énergie trouver:", energie(clavier))
-print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
-for i in range(4):
-    for j in range(10):
-        print(clavier[i][j], end=' ')
-    print()
 
