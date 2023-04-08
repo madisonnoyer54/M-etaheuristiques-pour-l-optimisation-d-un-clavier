@@ -1,7 +1,8 @@
 import random
 import pandas as pd
 import math
-#import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+import numpy as np
 
 # LES FONCTIONS 
 
@@ -73,6 +74,23 @@ def energie(clavier):
 
 
 # LE MAIN
+#Crée le graphe
+x = []
+y = []
+
+fig, ax = plt.subplots()
+line, = ax.plot(x, y,'-*b')
+
+# Definir 
+plt.xlabel("Numéro du clavier", fontsize=8)
+plt.ylabel("Energie", fontsize=8)
+plt.title("Evolution de la méthode du recuit simulé.", fontsize=8)
+
+#plt.text(2,8,"j'ecris ici si je veux !", fontsize=8) 
+
+
+
+
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
 lettres = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -88,12 +106,22 @@ for lettre in lettres:
     clavier[i][j] = lettre
 
 
+# Condition de continuiter de l'algo
 for i in range(0,10) : 
     clavierVoisin = voisin(clavier)
     # Plus l'energie est petite mieux c'est 
     if(energie(clavierVoisin) < energie(clavier)):
         clavier = clavierVoisin
-   
+    x.append(i)
+    y.append(energie(clavier))
+    line.set_data(x, y)
+    ax.relim()
+    ax.autoscale_view()
+    plt.draw()
+    plt.pause(0.1)
+    
+
+plt.close()
 
 print( "Resultat obtenue avec 10 iteration")
 print( "L'énergie trouver:", energie(clavier))
