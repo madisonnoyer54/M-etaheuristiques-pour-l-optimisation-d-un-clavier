@@ -139,6 +139,8 @@ for lettre in lettres:
 
 temps = 0
 somme =0
+palier1=0
+nbPalier =0
 # Condition de continuiter de l'algo
 while(temps < 3) : 
     temp = T0()
@@ -153,8 +155,16 @@ while(temps < 3) :
 
     # Plus l'energie est petite mieux c'est 
     if(energie(clavierVoisin) < temp):
-        clavier = clavierVoisin
+        clavier = clavierVoisin 
+        palier1 = palier1 +1
     
+    # Calcule du palier
+    if(palier1 == 12 | palier1 ==100):
+        nbPalier = nbPalier +1
+        palier1 =0
+        plt.text(somme,energie(clavierVoisin),"Palier", fontsize=8) 
+        plt.axvline(x=somme, color='red')
+
   
     # Pour le graphe
     x.append(somme)
