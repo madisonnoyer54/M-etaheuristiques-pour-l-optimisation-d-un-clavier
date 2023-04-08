@@ -75,7 +75,7 @@ def energie(clavier):
 # Définir la fonction à appeler lors de la fermeture de la fenêtre du graphe 
 def on_close(event):
     plt.close()
-    print( "Resultat obtenue avec", somme, "iteration")
+    print( "Resultat obtenue avec", somme, "iterations")
     print( "L'énergie trouver:", energie(clavier))
     print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
     for i in range(4):
@@ -100,8 +100,6 @@ plt.gcf().canvas.mpl_connect('close_event', on_close)
 plt.xlabel("Numéro du clavier", fontsize=8)
 plt.ylabel("Energie", fontsize=8)
 plt.title("Evolution de la meilleur solution de la méthode du recuit simulé.", fontsize=8)
-
-#plt.text(2,8,"j'ecris ici si je veux !", fontsize=8) 
 
 
 
@@ -131,10 +129,14 @@ while(temps < 3) :
         temps = temps +1
     else: 
         temps = 0
+    
+
     # Plus l'energie est petite mieux c'est 
     if(energie(clavierVoisin) < energie(clavier)):
         clavier = clavierVoisin
+        plt.text(somme,energie(clavier),"Top!", fontsize=8) 
    
+    # Pour le graphe
     x.append(somme)
     y.append(energie(clavier))
     line.set_data(x, y)
@@ -142,11 +144,12 @@ while(temps < 3) :
     ax.autoscale_view()
     plt.draw()
     plt.pause(0.1)
+  
     
 
 plt.close()
 
-print( "Resultat obtenue avec ",somme, " iteration")
+print( "Resultat obtenue avec ",somme, " iterations")
 print( "L'énergie trouver:", energie(clavier))
 print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
 for i in range(4):
