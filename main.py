@@ -74,14 +74,15 @@ def energie(clavier):
 
     return somme
 
+
 # Fonction à appeler lors de la fermeture de la fenêtre du graphe 
 def on_close(event):
     stop()
 
-# Fonction fermeture 
+
+# Fonction fermeture crtl+C
 def handle_signal(signal, frame):
    stop()
-
 
 
 # Calcule de T0 
@@ -94,7 +95,7 @@ def T0():
     return (energie(clavierTest) + energie(clavier)) /2
 
 
-# Ferme 
+# Ferme correctement le programme 
 def stop():
     plt.close()
     print( "Resultat obtenue avec", somme, "iterations")
@@ -106,11 +107,11 @@ def stop():
         print()
     raise SystemExit
 
+
 # LE MAIN
 #Crée le graphe
 x = []
 y = []
-
 
 fig, ax = plt.subplots()
 line, = ax.plot(x, y,'-*b')
@@ -119,13 +120,10 @@ line, = ax.plot(x, y,'-*b')
 plt.gcf().canvas.mpl_connect('close_event', on_close)
 signal.signal(signal.SIGINT, handle_signal)
 
-# Definir 
+# Definir Graphe
 plt.xlabel("Nombre d'itérations", fontsize=8)
 plt.ylabel("Température", fontsize=8)
 plt.title("Evolution de la méthode du recuit simulé.", fontsize=8)
-
-
-
 
 # On crée un clavier vide de 4x10 
 clavier = [['_' for j in range(10)] for i in range(4)]
@@ -141,21 +139,17 @@ for lettre in lettres:
         j = random.randint(0, 9)
     clavier[i][j] = lettre
 
-
-
 somme =0
 palier1=0
 palier2 =0
 temp = T0()
-# Condition de continuiter de l'algo
+
 while(True) : 
     somme = somme +1
     clavierVoisin = voisin(clavier)
 
     # Plus l'energie est petite mieux c'est 
-
     if(energie(clavierVoisin) < temp):
-       # print("passse")
         clavier = clavierVoisin 
         palier1 = palier1 +1
         temp = energie(clavier)
