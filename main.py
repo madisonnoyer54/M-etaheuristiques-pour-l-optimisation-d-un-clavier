@@ -72,19 +72,34 @@ def energie(clavier):
 
     return somme
 
+# Définir la fonction à appeler lors de la fermeture de la fenêtre du graphe 
+def on_close(event):
+    plt.close()
+    print( "Resultat obtenue avec", somme, "iteration")
+    print( "L'énergie trouver:", energie(clavier))
+    print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
+    for i in range(4):
+        for j in range(10):
+            print(clavier[i][j], end=' ')
+        print()
+    raise SystemExit
+
 
 # LE MAIN
 #Crée le graphe
 x = []
 y = []
 
+
 fig, ax = plt.subplots()
 line, = ax.plot(x, y,'-*b')
+# Fermeture de la fenêtre
+plt.gcf().canvas.mpl_connect('close_event', on_close)
 
 # Definir 
 plt.xlabel("Numéro du clavier", fontsize=8)
 plt.ylabel("Energie", fontsize=8)
-plt.title("Evolution de la méthode du recuit simulé.", fontsize=8)
+plt.title("Evolution de la meilleur solution de la méthode du recuit simulé.", fontsize=8)
 
 #plt.text(2,8,"j'ecris ici si je veux !", fontsize=8) 
 
@@ -106,13 +121,21 @@ for lettre in lettres:
     clavier[i][j] = lettre
 
 
+temps = 0
+somme =0
 # Condition de continuiter de l'algo
-for i in range(0,10) : 
+while(temps < 3) : 
+    somme = somme +1
     clavierVoisin = voisin(clavier)
+    if(energie(clavier) == energie(clavierVoisin)):
+        temps = temps +1
+    else: 
+        temps = 0
     # Plus l'energie est petite mieux c'est 
     if(energie(clavierVoisin) < energie(clavier)):
         clavier = clavierVoisin
-    x.append(i)
+   
+    x.append(somme)
     y.append(energie(clavier))
     line.set_data(x, y)
     ax.relim()
@@ -123,7 +146,7 @@ for i in range(0,10) :
 
 plt.close()
 
-print( "Resultat obtenue avec 10 iteration")
+print( "Resultat obtenue avec ",somme, " iteration")
 print( "L'énergie trouver:", energie(clavier))
 print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
 for i in range(4):
