@@ -93,6 +93,14 @@ def handle_signal(signal, frame):
     sys.exit(0)
 
 
+# Calcule de T0 
+def T0():
+    clavierTest = clavier
+    result = 0
+    for i in range(100):
+        clavierTest = voisin(clavierTest)
+       
+    return (energie(clavierTest) + energie(clavier)) /2
 # LE MAIN
 #Crée le graphe
 x = []
@@ -107,9 +115,9 @@ plt.gcf().canvas.mpl_connect('close_event', on_close)
 signal.signal(signal.SIGINT, handle_signal)
 
 # Definir 
-plt.xlabel("Numéro du clavier", fontsize=8)
-plt.ylabel("Energie", fontsize=8)
-plt.title("Evolution de la meilleur solution de la méthode du recuit simulé.", fontsize=8)
+plt.xlabel("Nombre d'itérations", fontsize=8)
+plt.ylabel("Température", fontsize=8)
+plt.title("Evolution de la méthode du recuit simulé.", fontsize=8)
 
 
 
@@ -133,6 +141,7 @@ temps = 0
 somme =0
 # Condition de continuiter de l'algo
 while(temps < 3) : 
+    temp = T0()
     somme = somme +1
     clavierVoisin = voisin(clavier)
 
@@ -143,18 +152,23 @@ while(temps < 3) :
     
 
     # Plus l'energie est petite mieux c'est 
-    if(energie(clavierVoisin) < energie(clavier)):
+    if(energie(clavierVoisin) < temp):
         clavier = clavierVoisin
-        plt.text(somme,energie(clavier),"Top!", fontsize=8) 
-   
+    
+  
     # Pour le graphe
     x.append(somme)
-    y.append(energie(clavier))
+    y.append(energie(clavierVoisin))
     line.set_data(x, y)
     ax.relim()
     ax.autoscale_view()
     plt.draw()
     plt.pause(0.1)
+    temp = energie(clavier)
+
+        
+   
+
   
     
 
