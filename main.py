@@ -3,6 +3,8 @@ import pandas as pd
 import math
 from matplotlib import pyplot as plt
 import numpy as np
+import signal
+import sys
 
 # LES FONCTIONS 
 
@@ -72,7 +74,7 @@ def energie(clavier):
 
     return somme
 
-# Définir la fonction à appeler lors de la fermeture de la fenêtre du graphe 
+# Fonction à appeler lors de la fermeture de la fenêtre du graphe 
 def on_close(event):
     plt.close()
     print( "Resultat obtenue avec", somme, "iterations")
@@ -84,6 +86,12 @@ def on_close(event):
         print()
     raise SystemExit
 
+# Fonction fermeture 
+def handle_signal(signal, frame):
+    plt.close()
+    raise SystemExit
+    sys.exit(0)
+
 
 # LE MAIN
 #Crée le graphe
@@ -93,8 +101,10 @@ y = []
 
 fig, ax = plt.subplots()
 line, = ax.plot(x, y,'-*b')
-# Fermeture de la fenêtre
+
+# Fermeture 
 plt.gcf().canvas.mpl_connect('close_event', on_close)
+signal.signal(signal.SIGINT, handle_signal)
 
 # Definir 
 plt.xlabel("Numéro du clavier", fontsize=8)
@@ -125,6 +135,7 @@ somme =0
 while(temps < 3) : 
     somme = somme +1
     clavierVoisin = voisin(clavier)
+
     if(energie(clavier) == energie(clavierVoisin)):
         temps = temps +1
     else: 
@@ -156,33 +167,4 @@ for i in range(4):
     for j in range(10):
         print(clavier[i][j], end=' ')
     print()
-
-
-
-# LES TESTS 
-# Test de la frequence 
-#print(frequence('B','C'))
-# Test de la distance
-#print(dist('B','C',clavier))
-
-# Affichage du clavier
-
-"""
-for i in range(4):
-    for j in range(10):
-        print(clavier[i][j], end=' ')
-    print()
-"""
-# Test de la fonction energie 
-#print(energie(clavier))
-
-# Affichage du  nvx clavier
-"""
-clavier = voisin(clavier)
-for i in range(4):
-    for j in range(10):
-        print(clavier[i][j], end=' ')
-    print()
-"""
-
 
