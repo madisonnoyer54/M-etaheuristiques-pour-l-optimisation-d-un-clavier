@@ -8,8 +8,13 @@ Projet d'optimisation
 # BIBLIOTHEQUE UTILISER 
 
 # la bibliothèque Pandas
+# Sert a lire le fichier
 sudo apt install python3-pip
 pip install pandas
+
+# la bibliothèque matplotib
+# Sert a afficher le graphe
+pip install matplotlib
 
 # COMMENT EXECUTER NOTRE PROGRAME 
 python3 main.py
