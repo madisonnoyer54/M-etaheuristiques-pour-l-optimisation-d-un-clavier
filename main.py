@@ -90,8 +90,10 @@ for lettre in lettres:
 
 for i in range(0,10) : 
     clavierVoisin = voisin(clavier)
-    if(energie(clavierVoisin) > energie(clavier)):
+    # Plus l'energie est petite mieux c'est 
+    if(energie(clavierVoisin) < energie(clavier)):
         clavier = clavierVoisin
+   
 
 print( "Resultat obtenue avec 10 iteration")
 print( "L'énergie trouver:", energie(clavier))
