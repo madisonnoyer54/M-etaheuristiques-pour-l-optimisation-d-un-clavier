@@ -99,11 +99,11 @@ def T0():
 def stop():
     plt.close()
     print( "Resultat obtenue avec", somme, "iterations")
-    print( "L'énergie trouver:", energie(clavier))
+    print( "L'énergie trouver:", energie(clavierResultat))
     print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
     for i in range(4):
         for j in range(10):
-            print(clavier[i][j], end=' ')
+            print(clavierResultat[i][j], end=' ')
         print()
     raise SystemExit
 
@@ -143,6 +143,8 @@ somme =0
 palier1=0
 palier2 =0
 temp = T0()
+plusPetit =0
+clavierResultat=clavier
 
 while(True) : 
     somme = somme +1
@@ -152,7 +154,12 @@ while(True) :
     if(energie(clavierVoisin) < temp):
         clavier = clavierVoisin 
         palier1 = palier1 +1
-        temp = energie(clavier)
+        # temp = energie(clavier)
+        if(energie(clavier)<plusPetit ):
+            plusPetit = energie(clavier)
+            clavierResultat = clavier
+        
+    
     
     palier2 =palier2 +1
 
@@ -161,6 +168,7 @@ while(True) :
         palier1 =0
         plt.axvline(x=somme, color='red')
         palier2 =0
+        temp = plusPetit
     
     # Si 100 iterarations se passe sens changement, alors on considaire qu'on stagne  
     if(palier2 == 100 and palier1 == 0):
