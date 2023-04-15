@@ -143,7 +143,7 @@ somme =0
 palier1=0
 palier2 =0
 temp = T0()
-plusPetit =0
+plusPetit =temp
 clavierResultat=clavier
 
 while(True) : 
