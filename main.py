@@ -67,7 +67,6 @@ def energie(clavier):
             if(clavier[i][j] != '_'):
                # On parcour les lettre de l'aphaB
                for lettre in lettres:
-                    
                     # Formule de l'energie 
                     somme = somme + dist(lettre, clavier[i][j],clavier) * frequence(lettre, clavier[i][j])
     
@@ -87,23 +86,48 @@ def handle_signal(signal, frame):
 
 # Calcule de T0 
 def T0():
-    clavierTest = clavier
-    result = 0
-    for i in range(100):
-        clavierTest = voisin(clavierTest)
-       
-    return (energie(clavierTest) + energie(clavier)) /2
+
+    # Demande a l'utilisateur le taux d'acceptation 
+    print("1.Si on suppose que la configuration initiale est médiocre ")
+    print("2.Si on suppose que la configuration intiale est bonne")
+    tauxAccep= input("Choisir le taux d’acceptation initiale (saisir 1 ou 2) ")
+        
+
+    print("")
+    print("Calcule de la valeur initial.")
+    print("On calcule 100 perturbations, cela peut prendre quelques minutes...")
+  
+    energieDepart = energie(clavier)
+    variations_absolues = []
+    for i in range(100):    
+        #print(i)
+        clavierVoisin = voisin(clavier)
+        energieVoisin = energie(clavierVoisin)
+        
+        variations_absolues.append(abs(energieVoisin - energieDepart))
+
+        moyenne_variations_absolues = np.mean(variations_absolues)
+
+        
+    if(tauxAccep == 1):
+        temperature_initiale = - moyenne_variations_absolues / np.log(0.5)
+    else:
+        temperature_initiale = - moyenne_variations_absolues / np.log(0.2)
+ 
+    return temperature_initiale
+
+
 
 
 # Ferme correctement le programme 
 def stop():
     plt.close()
     print( "Resultat obtenue avec", somme, "iterations")
-    print( "L'énergie trouver:", energie(clavierResultat))
+    print( "L'énergie trouver:", energie(meilleurClavier))
     print("Clavier obtenue (les \"_\" sont considérer comme des cases vides):")
     for i in range(4):
         for j in range(10):
-            print(clavierResultat[i][j], end=' ')
+            print(meilleurClavier[i][j], end=' ')
         print()
     raise SystemExit
 
@@ -139,40 +163,64 @@ for lettre in lettres:
         j = random.randint(0, 9)
     clavier[i][j] = lettre
 
+
+
 somme =0
 palier1=0
 palier2 =0
-temp = T0()
-plusPetit =temp
-clavierResultat=clavier
-
-while(True) : 
-    somme = somme +1
+T = T0()
+stagne =0
+energieClavier = energie(clavier)
+meilleurClavier = clavier
+print()
+print("On passe à l'optimisation, voir le graphique.")
+print()
+while(True) :
+    somme = somme +1 
     clavierVoisin = voisin(clavier)
+    energieVoisin = energie(clavierVoisin)
+    df = abs(energieVoisin - energieClavier)
 
-    # Plus l'energie est petite mieux c'est 
-    if(energie(clavierVoisin) < temp):
-        clavier = clavierVoisin 
+    # Le voisin est meilleur 
+    if(energieVoisin < energieClavier):
         palier1 = palier1 +1
-        # temp = energie(clavier)
-        if(energie(clavier)<plusPetit ):
-            plusPetit = energie(clavier)
-            clavierResultat = clavier
-        
-    
-    
+        clavier = clavierVoisin
+        energieClavier = energieVoisin
+        stagne =0
+    else:
+        # On calcule la probabiliter
+        p = math.exp(-df/T)
+        r = random.uniform(0, 1)
+        if(r < p):
+            palier1 = palier1 +1
+            clavier = clavierVoisin
+            energieClavier = energieVoisin
+            stagne =0
+        else:
+            stagne = stagne +1
+
+
+    # On garde en memoir le meilleur 
+    if(energie(meilleurClavier)> energie(clavier)):
+        meilleurClavier = clavier
+
     palier2 =palier2 +1
+
 
     # Calcule du palier
     if(palier1 == 12 or palier2 == 100):
         palier1 =0
         plt.axvline(x=somme, color='red')
         palier2 =0
-        temp = plusPetit
-    
-    # Si 100 iterarations se passe sens changement, alors on considaire qu'on stagne  
-    if(palier2 == 100 and palier1 == 0):
+
+        # Décroissante de temparature 
+        T = T * 0.9
+
+    # Si 100 iterarations se passe sens amélioration, alors on considaire qu'on stagne  
+    if(stagne ==100):
+        print("Arrêt par stagnation.")
         stop()
+
 
     # Pour le graphe
     x.append(somme)
@@ -182,7 +230,3 @@ while(True) :
     ax.autoscale_view()
     plt.draw()
     plt.pause(0.1)
-
-
-
-
